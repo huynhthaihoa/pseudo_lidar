@@ -41,8 +41,8 @@ parser.add_argument('--lr_scale', type=int, default=200, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--split_file', default='Kitti/object/train.txt',
                     help='save model')
-parser.add_argument('--btrain', type=int, default=4)
-parser.add_argument('--start_epoch', type=int, default=1)
+parser.add_argument('--btrain', type=int, default=4, help='training batch size (default: 4)')
+parser.add_argument('--start_epoch', type=int, default=1, help='Start epoch (default is 1)')
 
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
@@ -70,7 +70,7 @@ else:
     print('no model')
 
 if args.cuda:
-    model = nn.DataParallel(model)
+    model = nn.DataParallel(model) # for distributed training (multi-GPU training)
     model.cuda()
 
 if args.loadmodel is not None:
